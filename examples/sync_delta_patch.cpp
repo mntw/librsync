@@ -5,7 +5,7 @@
 
 int main(int argc, char * argv[]) {
 
-	if (argc != 2) {
+	if (argc != 3) {
 		std::cout << "Wrong parameters, please enter two files that have to be synchronyzed!" << std::endl;
 		return -1;
 	}
@@ -24,9 +24,9 @@ int main(int argc, char * argv[]) {
 	sigFile = fopen(sigFilename.c_str(), "w+");
 
 	rs_job_t * sig_job;
-	rs_sig_begin((size_t) 1024, (size_t) RS_DEFAULT_STRONG_LEN);
+	rs_sig_begin((size_t) RS_DEFAULT_BLOCK_LEN, (size_t) RS_DEFAULT_STRONG_LEN);
 
-	rs_result res = rs_sig_file(srcFile, sigFile, 1024, 15, NULL); // creating signature
+	rs_result res = rs_sig_file(srcFile, sigFile, RS_DEFAULT_BLOCK_LEN, RS_DEFAULT_STRONG_LEN, NULL); // creating signature
 
 	fclose(srcFile);	
 	fclose(sigFile);	
@@ -56,7 +56,7 @@ int main(int argc, char * argv[]) {
 	fclose(newFile);
 	fclose(deltaFile);
 	
-	remove(sigFilename.c_str());
+//	remove(sigFilename.c_str());
 	remove(deltaFilename.c_str());
 	remove(filename.c_str());
 	rename(updFilename.c_str(), filename.c_str());
